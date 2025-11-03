@@ -5,6 +5,10 @@
 .env.test.local
 .env.production.local
 
+# Virtual Env
+.backend-venv
+.posts-service-venv
+
 # Docker
 .docker/
 docker-compose.override.yml
