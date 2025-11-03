@@ -1,7 +1,7 @@
 services:
   db:
     image: postgres:15
-    container_name: employee_directory_db
+    container_name: posts_repository_db
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
@@ -16,6 +16,66 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
+  posts-service:
+    build: ../posts-service
+    container_name: posts-service
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - PYTHON_ENV=${PYTHON_ENV}
+    ports:
+      - "${POSTS_SERVICE_PORT}:8001"
+    volumes:
+      - ../posts-service/app:/app/app
+
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  backend:
+    build: ../backend
+    container_name: backend
+    environment:
+      - POSTS_SERVICE_URL=${POSTS_SERVICE_URL}
+      - PYTHON_ENV=${PYTHON_ENV}
+    ports:
+      - "${BACKEND_PORT}:8000"
+    volumes:
+      - ../backend/app:/app/app
+
+    depends_on:
+      posts-service:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  frontend:
+    build: ../frontend
+    container_name: frontend
+    environment:
+      - NODE_ENV=${NODE_ENV}
+    ports:
+      - "${FRONTEND_PORT}:3000"
+    volumes:
+      - ../frontend/src:/app/src
+      - ../frontend/public:/app/public
+    depends_on:
+      backend:
+        condition: service_healthy
+    stdin_open: true
+    tty: true
+
+  
 
 volumes:
   postgres_data:
