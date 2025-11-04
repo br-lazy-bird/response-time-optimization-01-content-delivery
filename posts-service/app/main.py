@@ -4,9 +4,10 @@ from sqlalchemy.orm import Session
 from typing import List, Dict, Any
 
 from .core.database import get_db
-from .core.logging_config import get_logger
+from .core.logging_config import get_logger, setup_logging
 from .models.post import Post
 
+setup_logging()
 logger = get_logger(__name__)
 
 app = FastAPI(title="Posts Service")

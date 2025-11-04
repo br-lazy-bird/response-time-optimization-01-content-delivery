@@ -44,6 +44,7 @@ services:
     environment:
       - POSTS_SERVICE_URL=${POSTS_SERVICE_URL}
       - PYTHON_ENV=${PYTHON_ENV}
+      - PYTHONUNBUFFERED=1
     ports:
       - "${BACKEND_PORT}:8000"
     volumes:
