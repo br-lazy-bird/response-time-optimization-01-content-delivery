@@ -367,7 +367,7 @@ async def call_posts_service(endpoint: str) -> Dict[Any, Any]:
 ### Step 1: Restart the Backend Service
 
 ```bash
-docker compose -f docker/compose.yaml restart backend
+docker compose -f docker/compose.yaml --env-file .env restart backend
 ```
 
 Wait a few seconds for the service to restart.
@@ -389,7 +389,7 @@ Wait a few seconds for the service to restart.
 ### Step 3: Check Backend Logs
 
 ```bash
-docker compose -f docker/compose.yaml logs backend
+docker compose -f docker/compose.yaml --env-file .env logs backend
 ```
 
 You should see:
