@@ -5,8 +5,8 @@ const ProblemDescription: React.FC = () => {
     <div className="description">
       <p>
         Our blog system is experiencing significant performance problems that are affecting user experience.
-        Users report that loading blog posts takes several seconds, leading to frustration and reduced
-        content engagement.
+        Users report that loading blog posts takes several seconds, regardless of how many times it is acessed, 
+        leading to frustration and reduced content engagement.
       </p>
       <p>
         Select a blog post from the dropdown below to experience the performance issue firsthand.

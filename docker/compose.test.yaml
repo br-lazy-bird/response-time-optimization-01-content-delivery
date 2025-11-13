@@ -1,0 +1,60 @@
+services:
+  test-db:
+    image: postgres:15
+    container_name: blog_test_db
+    environment:
+      POSTGRES_DB: test_posts_repository
+      POSTGRES_USER: test_user
+      POSTGRES_PASSWORD: test_password
+    volumes:
+      - ../database/init-test:/docker-entrypoint-initdb.d
+    tmpfs:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U test_user -d test_posts_repository"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  test-posts-service:
+    build: ../posts-service
+    container_name: blog_test_posts_service
+    environment:
+      - DATABASE_URL=postgresql+psycopg://test_user:test_password@test-db:5432/test_posts_repository
+      - PYTHON_ENV=test
+    depends_on:
+      test-db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  test-backend:
+    build: ../backend
+    container_name: blog_test_backend
+    environment:
+      - POSTS_SERVICE_URL=http://test-posts-service:8001
+      - PYTHON_ENV=test
+    depends_on:
+      test-posts-service:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  test-runner:
+    build: ../backend
+    container_name: blog_test_runner
+    environment:
+      - PYTHON_ENV=test
+      - API_URL=http://test-backend:8000
+    depends_on:
+      test-backend:
+        condition: service_healthy
+    volumes:
+      - ../backend:/app
+    command: pytest tests/ -v -s
