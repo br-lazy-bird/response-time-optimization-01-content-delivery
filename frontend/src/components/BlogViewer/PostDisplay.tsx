@@ -11,10 +11,10 @@ interface Post {
 
 interface PostDisplayProps {
   post: Post;
-  loadTime: number;
+  loadTime: number | null;
 }
 
-const PostDisplay: React.FC<PostDisplayProps> = ({ post, loadTime }) => {
+const PostDisplay: React.FC<PostDisplayProps> = ({ post }) => {
   return (
     <div className="postDisplay">
       <h3 className="postTitle">{post.title}</h3>
@@ -35,10 +35,6 @@ const PostDisplay: React.FC<PostDisplayProps> = ({ post, loadTime }) => {
         </div>
       </div>
       <div className="postContent">{post.content}</div>
-      <div className="loadTimeFooter">
-        <span className="loadTimeLabel">Load time:</span>
-        <span className="loadTimeValue">{loadTime.toFixed(2)}s</span>
-      </div>
     </div>
   );
 };

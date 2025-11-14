@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { SystemLayout } from '../../shared-components/SystemLayout';
+import { MetricsFooter } from '../../shared-components/MetricsFooter';
+import { LoadingSpinner } from '../../shared-components/LoadingSpinner';
 import ProblemDescription from './ProblemDescription';
 import PostSelector from './PostSelector';
 import PostDisplay from './PostDisplay';
@@ -64,7 +67,7 @@ const BlogViewer: React.FC = () => {
       const startTime = Date.now();
       const response = await fetch(`${API_BASE_URL}/posts/${postId}`);
       const endTime = Date.now();
-      const duration = (endTime - startTime) / 1000;
+      const duration = endTime - startTime;
 
       setLastRequestTime(duration);
 
@@ -87,44 +90,35 @@ const BlogViewer: React.FC = () => {
   };
 
   return (
-    <div className="card">
-      <h2 className="title">Blog Content Delivery</h2>
-
-      <ProblemDescription />
-
-      {initialLoading ? (
-        <div className="loadingContainer">
-          <div className="loadingSpinner" />
-          <p className="loadingText">Loading blog posts...</p>
-        </div>
-      ) : (
-        <>
-          <PostSelector
-            posts={posts}
-            selectedPostId={selectedPostId}
-            loading={loading}
-            onPostSelect={handlePostSelection}
+    <SystemLayout
+      title="Blog Content Delivery"
+      description={<ProblemDescription />}
+      loading={initialLoading}
+      loadingMessage="Loading blog posts..."
+      error={error}
+      metrics={
+        selectedPost && lastRequestTime !== null && !loading ? (
+          <MetricsFooter
+            metrics={[
+              { label: 'Load Time', value: lastRequestTime, unit: 'ms' }
+            ]}
           />
+        ) : undefined
+      }
+    >
+      <PostSelector
+        posts={posts}
+        selectedPostId={selectedPostId}
+        loading={loading}
+        onPostSelect={handlePostSelection}
+      />
 
-          {loading && (
-            <div className="loadingContainer">
-              <div className="loadingSpinner" />
-              <p className="loadingText">Loading post...</p>
-            </div>
-          )}
+      {loading && <LoadingSpinner message="Loading post..." />}
 
-          {error && (
-            <div className="error">
-              <p>{error}</p>
-            </div>
-          )}
-
-          {selectedPost && lastRequestTime !== null && !loading && (
-            <PostDisplay post={selectedPost} loadTime={lastRequestTime} />
-          )}
-        </>
+      {selectedPost && !loading && (
+        <PostDisplay post={selectedPost} loadTime={lastRequestTime} />
       )}
-    </div>
+    </SystemLayout>
   );
 };
 
