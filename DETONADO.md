@@ -111,87 +111,13 @@ FastAPI Backend (8000)
     +-- MISS? Fetch from posts-service -> Store in cache -> Return
 ```
 
----
+### Further Reading
 
-## Caching Solutions Overview
+If you want to learn more about caching strategies and solutions:
 
-Before implementing our cache, understand the landscape of caching options:
-
-### In-Memory Caching
-
-**Characteristics:** Extremely fast, no external dependencies, lost on restart, single-server only
-
-**Best for:** Learning, single-server applications, easily regenerated data
-
-**Further reading:** https://docs.python.org/3/library/functools.html#functools.lru_cache
-
-### fastapi-cache2: FastAPI-Native Solution
-
-**What it is:** A library specifically designed for FastAPI with decorator-based caching that supports multiple backends (in-memory, Redis, Memcached).
-
-**Key features:** Decorator syntax (`@cache()`), async support, TTL support, can upgrade from in-memory to Redis without code changes
-
-**Example:**
-```python
-from fastapi_cache import FastAPICache
-from fastapi_cache.backends.inmemory import InMemoryBackend
-from fastapi_cache.decorator import cache
-
-@app.on_event("startup")
-async def startup():
-    FastAPICache.init(InMemoryBackend())
-
-@cache(expire=300)  # 5 minutes
-async def call_posts_service(endpoint: str):
-    # Function automatically cached
-    ...
-```
-
-**When to use:** FastAPI applications needing clean decorator-based caching with potential to scale to Redis
-
-**Further reading:** https://github.com/long2ice/fastapi-cache
-
-### cachetools: Python Standard
-
-**What it is:** Production-ready Python caching library with various eviction policies (LRU, LFU, TTL).
-
-**When to use:** Framework-agnostic caching with more sophisticated eviction strategies
-
-**Further reading:** https://pypi.org/project/cachetools/
-
-### Redis: Industry Standard
-
-**What it is:** In-memory data structure store used as a distributed cache with sub-millisecond latency, shared across multiple servers, persistence options, and rich data structures.
-
-**When to use:** Production applications, multiple server instances, need for persistence
-
-**Further reading:** https://redis.io/docs/
-
-### Memcached
-
-**What it is:** High-performance distributed memory caching system for simple key-value caching.
-
-**Further reading:** https://memcached.org/
-
-### CDN Caching
-
-**What it is:** Content Delivery Networks cache content at edge locations globally (CloudFlare, AWS CloudFront, Fastly).
-
-**Best for:** Static assets, API responses, global user base
-
-**Further reading:** https://developers.cloudflare.com/cache/
-
-### HTTP Caching
-
-**What it is:** Browser and proxy-level caching using HTTP headers (`Cache-Control`, `ETag`, `Last-Modified`).
-
-**Further reading:** https://developer.mozilla.org/en-US/docs/Web/HTTP/Caching
-
-### General Caching Resources
-
-**Caching best practices:** https://aws.amazon.com/caching/
-
-**Cache replacement policies:** https://en.wikipedia.org/wiki/Cache_replacement_policies
+- **Python Caching Libraries:** https://github.com/long2ice/fastapi-cache - FastAPI-native caching with support for Redis and Memcached backends
+- **Caching Best Practices:** https://aws.amazon.com/caching/ - Comprehensive guide to caching patterns and when to use them
+- **Redis Documentation:** https://redis.io/docs/ - Industry-standard distributed caching solution for production systems
 
 ---
 
