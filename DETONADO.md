@@ -117,7 +117,7 @@ FastAPI Backend (8000)
 
 Before implementing our cache, understand the landscape of caching options:
 
-### In-Memory Caching (What We'll Build)
+### In-Memory Caching
 
 **Characteristics:** Extremely fast, no external dependencies, lost on restart, single-server only
 
