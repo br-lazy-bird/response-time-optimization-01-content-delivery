@@ -95,9 +95,19 @@ The system will:
 
 ---
 
+## Meet the Lazy Bird
+
+> 🐦 The Lazy Bird is a peculiar creature. It has an exceptional talent for catching bugs... but absolutely zero motivation to fix them. You'll find it wandering around codebases, spotting issues, and then immediately looking for someone else to do the hard work.
+>
+> Today, it found you.
+
+---
+
 ## The Problem
 
-When you load blog posts in the application, you'll notice they take a long time to display. The Posts Service has an artificial 2-second delay to simulate real-world processing time (complex queries, external API calls, data transformation, etc.).
+> 🐦 "Hey... so we have this blog platform, right? And users are complaining that loading posts is super slow. Every. Single. Time. I tried loading the same post twice and... yeah, it takes forever both times. Like, why? It's the same post! There's definitely something weird going on in the backend. But I just found a really comfortable spot in the sun, so... could you figure this out? Load some posts and see what's happening. Thanks!"
+
+The Posts Service has an artificial 2-second delay to simulate real-world processing time (complex queries, external API calls, data transformation, etc.).
 
 **Your Mission:**
 1. Investigate why the blog posts load slowly
