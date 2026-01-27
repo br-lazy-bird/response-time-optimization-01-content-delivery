@@ -115,9 +115,7 @@ FastAPI Backend (8000)
 
 If you want to learn more about caching strategies and solutions:
 
-- **Python Caching Libraries:** https://github.com/long2ice/fastapi-cache - FastAPI-native caching with support for Redis and Memcached backends
-- **Caching Best Practices:** https://aws.amazon.com/caching/ - Comprehensive guide to caching patterns and when to use them
-- **Redis Documentation:** https://redis.io/docs/ - Industry-standard distributed caching solution for production systems
+- [Lazy Bird Blog - Caching](https://lazybird.com.br/blog/2025-11-10-lazy-bird---caching/)
 
 ---
 
